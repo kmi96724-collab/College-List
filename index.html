@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কলেজ খুঁজুন | বাংলাদেশ কলেজ ভর্তি</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Hind Siliguri", sans-serif;
+        }
+
+        body {
+            background: #f3f6f8;
+            color: #29343d;
+        }
+
+        /* ============ LOGIN ============ */
+
+        #authPage {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #edf7f1, #e8eef5);
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 430px;
+            background: #fff;
+            padding: 35px;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px rgba(0,0,0,.12);
+        }
+
+        .auth-box h1 {
+            text-align: center;
+            color: #168a57;
+        }
+
+        .auth-box > p {
+            text-align: center;
+            color: #77838d;
+            margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tabs button {
+            flex: 1;
+            border: none;
+            padding: 11px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .tabs .active {
+            background: #168a57;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d9e1e6;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            border-color: #168a57;
+        }
+
+        .primary-btn {
+            width: 100%;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            background: #168a57;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 18px;
+            color: #6e7b85;
+        }
+
+        .switch span {
+            color: #168a57;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ============ MAIN APP ============ */
+
+        #app {
+            display: none;
+        }
+
+        header {
+            height: 78px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4%;
+            border-bottom: 1px solid #e2e7ea;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 30px;
+        }
+
+        .logo small {
+            color: #84909a;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #fff0f0;
+            color: #d43c3c;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1550px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #dce3e7;
+            border-radius: 16px;
+            padding: 10px 17px;
+            margin-bottom: 22px;
+        }
+
+        .search-box input {
+            border: none;
+            font-size: 18px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            gap: 25px;
+        }
+
+        /* ============ FILTER ============ */
+
+        .filter-panel {
+            background: white;
+            border: 1px solid #dfe5e8;
+            border-radius: 20px;
+            height: fit-content;
+            overflow: hidden;
+        }
+
+        .filter-title {
+            padding: 18px 20px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 1px solid #e8ecee;
+        }
+
+        .filter-content {
+            padding: 18px;
+        }
+
+        .filter-note {
+            color: #168a57;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .filter-item {
+            margin-bottom: 14px;
+        }
+
+        /* ============ STATS ============ */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid #dfe5e8;
+            padding: 18px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 27px;
+        }
+
+        .stat p {
+            color: #7b8791;
+        }
+
+        /* ============ COLLEGE CARD ============ */
+
+        .college-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .college-card {
+            background: white;
+            border: 1px solid #dfe5e8;
+            padding: 19px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,.03);
+        }
+
+        .college-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid #e5e9ec;
+            padding-bottom: 12px;
+        }
+
+        .college-name {
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .eiin {
+            background: #f1f4f6;
+            padding: 6px 9px;
+            border-radius: 8px;
+            font-size: 13px;
+            height: fit-content;
+            white-space: nowrap;
+        }
+
+        .location {
+            color: #77838d;
+            margin: 11px 0;
+            font-size: 14px;
+        }
+
+        .college-meta {
+            color: #596671;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .group-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .group-row {
+            background: #f1f4f7;
+            padding: 10px;
+            border-radius: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .group-name {
+            font-weight: bold;
+            color: #3565a8;
+        }
+
+        .group-info {
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .group-info strong {
+            display: block;
+        }
+
+        .details-btn {
+            width: 100%;
+            margin-top: 12px;
+            border: none;
+            padding: 10px;
+            border-radius: 9px;
+            background: #eaf6ef;
+            color: #168a57;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 9px;
+            border: none;
+            background: #fff0f0;
+            color: #d33;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .admin-panel {
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .admin-panel button {
+            border: none;
+            background: #168a57;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        /* ============ MODAL ============ */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 200;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 18px;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #e9eef1;
+        }
+
+        .info-section {
+            padding: 13px;
+            background: #f5f7f8;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .info-section h3 {
+            margin-bottom: 8px;
+            color: #168a57;
+        }
+
+        .info-section ul {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .notice {
+            background: #fff8df;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        @media(max-width: 1000px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        @media(max-width: 700px) {
+            .college-grid, .stats, .modal-grid { grid-template-columns: 1fr; }
+            .container { padding: 12px; }
+            .header-user strong { display: none; }
+            .college-name { font-size: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ============ LOGIN PAGE ============ -->
+
+<div id="authPage">
+    <div class="auth-box">
+        <h1>🎓 কলেজ খুঁজুন</h1>
+        <p>বাংলাদেশ কলেজ ভর্তি তথ্য প্ল্যাটফর্ম</p>
+
+        <div id="loginSection">
+            <div class="tabs">
+                <button class="active" id="userTab">User</button>
+                <button id="adminTab">Admin</button>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="যেমন: admin@college.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="******" required>
+                </div>
+
+                <button class="primary-btn" type="submit">Login করুন</button>
+            </form>
+
+            <div class="switch">
+                Account নেই? <span id="btnShowRegister">Registration করুন</span>
+            </div>
+        </div>
+
+        <div id="registerSection" style="display:none">
+            <h2>নতুন Account</h2>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>সম্পূর্ণ নাম</label>
+                    <input type="text" id="regName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" minlength="6" required>
+                </div>
+
+                <button class="primary-btn" type="submit">Registration সম্পন্ন করুন</button>
+            </form>
+
+            <div class="switch">
+                ইতোমধ্যে Account আছে? <span id="btnShowLogin">Login করুন</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============ MAIN APP ============ -->
+
+<div id="app">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🎓</div>
+            <div>
+                <h2>কলেজ খুঁজুন</h2>
+                <small>বাংলাদেশ কলেজ ভর্তি তথ্য</small>
+            </div>
+        </div>
+
+        <div class="header-user">
+            <strong id="userName">User</strong>
+            <button class="logout-btn" id="btnLogout">Logout</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="search" placeholder="কলেজের নাম অথবা EIIN নম্বর লিখুন...">
+        </div>
+
+        <div class="layout">
+            <!-- FILTER -->
+            <aside class="filter-panel">
+                <div class="filter-title">ফিল্টার</div>
+                <div class="filter-content">
+                    <p class="filter-note">আপনার তথ্য অনুযায়ী Eligible College খুঁজুন</p>
+
+                    <div class="filter-item">
+                        <label>আপনার SSC GPA</label>
+                        <input type="number" id="studentGpa" min="0" max="5" step=".01" placeholder="যেমন 5.00">
+                    </div>
+
+                    <div class="filter-item">
+                        <label>বিভাগ</label>
+                        <select id="division">
+                            <option value="">সকল বিভাগ</option>
+                            <option>ঢাকা</option>
+                            <option>চট্টগ্রাম</option>
+                            <option>রাজশাহী</option>
+                            <option>খুলনা</option>
+                            <option>বরিশাল</option>
+                            <option>সিলেট</option>
+                            <option>রংপুর</option>
+                            <option>ময়মনসিংহ</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label>জেলা / এলাকা</label>
+                        <input type="text" id="district" placeholder="এলাকার নাম লিখুন (যেমন: Gulshan)">
+                    </div>
+
+                    <div class="filter-item">
+                        <label>পছন্দের Group</label>
+                        <select id="groupFilter">
+                            <option value="">সকল Group</option>
+                            <option value="science">বিজ্ঞান</option>
+                            <option value="business">ব্যবসায় শিক্ষা</option>
+                            <option value="humanities">মানবিক</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label>প্রতিষ্ঠানের ধরন</label>
+                        <select id="typeFilter">
+                            <option value="">সকল</option>
+                            <option value="সরকারি">সরকারি</option>
+                            <option value="বেসরকারি">বেসরকারি</option>
+                        </select>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CONTENT -->
+            <main>
+                <div class="admin-panel" id="adminPanel">
+                    <button id="btnOpenAddModal">➕ নতুন কলেজ যোগ করুন</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <h2 id="collegeCount">০</h2>
+                        <p>প্রতিষ্ঠান</p>
+                    </div>
+                    <div class="stat">
+                        <h2 id="seatCount">০</h2>
+                        <p>মোট আসন</p>
+                    </div>
+                    <div class="stat">
+                        <h2 id="eligibleCount">০</h2>
+                        <p>Eligible College</p>
+                    </div>
+                </div>
+
+                <div class="college-grid" id="collegeList"></div>
+            </main>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============ COLLEGE DETAILS MODAL ============ -->
+
+<div class="modal" id="detailsModal">
+    <div class="modal-content">
+        <h2 id="detailName">কলেজের তথ্য</h2>
+        <div id="detailContent"></div>
+        <div class="modal-actions">
+            <button class="cancel-btn" id="btnCloseDetails">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============ ADMIN ADD MODAL ============ -->
+
+<div class="modal" id="addModal">
+    <div class="modal-content">
+        <h2>নতুন কলেজের তথ্য যোগ করুন</h2>
+        <div class="modal-grid">
+            <div class="form-group">
+                <label>কলেজের নাম</label>
+                <input id="newName">
+            </div>
+            <div class="form-group">
+                <label>EIIN</label>
+                <input id="newEiin">
+            </div>
+            <div class="form-group">
+                <label>বিভাগ</label>
+                <input id="newDivision" value="ঢাকা">
+            </div>
+            <div class="form-group">
+                <label>জেলা</label>
+                <input id="newDistrict" value="Dhaka">
+            </div>
+            <div class="form-group">
+                <label>উপজেলা / এলাকা</label>
+                <input id="newArea">
+            </div>
+            <div class="form-group">
+                <label>প্রতিষ্ঠানের ধরন</label>
+                <select id="newType">
+                    <option>বেসরকারি</option>
+                    <option>সরকারি</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>লিঙ্গ</label>
+                <select id="newGender">
+                    <option>ছেলে-মেয়ে</option>
+                    <option>ছেলে</option>
+                    <option>মেয়ে</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>শিফট</label>
+                <select id="newShift">
+                    <option>দিন</option>
+                    <option>সকাল</option>
+                    <option>দিবা</option>
+                </select>
+            </div>
+        </div>
+
+        <h3 style="margin:15px 0 10px">Group অনুযায়ী ভর্তি তথ্য</h3>
+        <div class="modal-grid">
+            <div class="form-group">
+                <label>বিজ্ঞান - আসন</label>
+                <input type="number" id="scienceSeats">
+            </div>
+            <div class="form-group">
+                <label>বিজ্ঞান - Minimum GPA</label>
+                <input type="number" step=".01" id="scienceGpa">
+            </div>
+            <div class="form-group">
+                <label>ব্যবসায় শিক্ষা - আসন</label>
+                <input type="number" id="businessSeats">
+            </div>
+            <div class="form-group">
+                <label>ব্যবসায় শিক্ষা - Minimum GPA</label>
+                <input type="number" step=".01" id="businessGpa">
+            </div>
+            <div class="form-group">
+                <label>মানবিক - আসন</label>
+                <input type="number" id="humanitiesSeats">
+            </div>
+            <div class="form-group">
+                <label>মানবিক - Minimum GPA</label>
+                <input type="number" step=".01" id="humanitiesGpa">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>বিশেষ ভর্তি নির্দেশনা</label>
+            <input id="newInstruction" placeholder="যেমন: কলেজ কর্তৃপক্ষের নিয়ম অনুযায়ী প্রয়োজনীয় কাগজপত্র">
+        </div>
+
+        <div class="modal-actions">
+            <button class="cancel-btn" id="btnCloseAddModal">বাতিল</button>
+            <button class="primary-btn" style="flex:1" id="btnAddCollege">কলেজ যোগ করুন</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============ JAVASCRIPT ============ -->
+
+<script>
+  let currentUser = null;
+  let loginType = "user";
+
+  // আপনার দেওয়া সমস্ত ডাটা সরাসরি দেওয়া হলো যেন লোড হতে কোনো সমস্যা না হয়
+  let allColleges = [
+    {
+        id: "1",
+        name: "BANANI BIDYANIKETAN SCHOOL & COLLEGE",
+        eiin: "108099",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Gulshan",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 150, minGpa: 3.61 },
+            business: { seats: 100, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "2",
+        name: "MIRPUR COLLEGE",
+        eiin: "108266",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 300, minGpa: 3.50 },
+            business: { seats: 400, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "3",
+        name: "RAJDHANI IDEAL COLLEGE",
+        eiin: "108252",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Khilgaon",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 50, minGpa: 3.50 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "4",
+        name: "NATIONAL COLLEGE",
+        eiin: "108494",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Badda",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 100, minGpa: 3.50 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "5",
+        name: "DAFFODIL INTERNATIONAL COLLEGE",
+        eiin: "108044",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhanmondi",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 170, minGpa: 3.00 },
+            business: { seats: 80, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "6",
+        name: "GREEN FIELD COLLEGE",
+        eiin: "132146",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 100, minGpa: 3.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "7",
+        name: "GULSHAN COLLEGE",
+        eiin: "108097",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Gulshan",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 70, minGpa: 3.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "8",
+        name: "HOLY CHILD COLLEGE",
+        eiin: "132122",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Uttara",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 0, minGpa: 3.00 },
+            business: { seats: 0, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "9",
+        name: "JATRABARI IDEAL HIGH SCHOOL AND COLLEGE",
+        eiin: "107877",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Jatrabari",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 50, minGpa: 3.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "10",
+        name: "KHILGAON IDEAL COLLEGE",
+        eiin: "132509",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Shahbagh",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 50, minGpa: 3.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "11",
+        name: "SOUTH POINT COLLEGE",
+        eiin: "132466",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Rampura",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 333, minGpa: 4.37 },
+            business: { seats: 250, minGpa: 3.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "12",
+        name: "DHAKA IMPERIAL COLLEGE",
+        eiin: "107974",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Badda",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 850, minGpa: 4.11 },
+            business: { seats: 450, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "13",
+        name: "BANOPHOOL ADIBASHI GREEN HEART COLLEGE",
+        eiin: "108212",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 130, minGpa: 4.00 },
+            business: { seats: 80, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "14",
+        name: "HAMDARD PUBLIC COLLEGE",
+        eiin: "134273",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhanmondi",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 500, minGpa: 4.00 },
+            business: { seats: 50, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "15",
+        name: "IDEAL COLLEGE",
+        eiin: "107976",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhanmondi",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 1000, minGpa: 4.00 },
+            business: { seats: 311, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "16",
+        name: "IDEAL COMMERCE COLLEGE FARMGATE",
+        eiin: "134157",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Tejgaon",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 120, minGpa: 4.00 },
+            business: { seats: 186, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "17",
+        name: "MILESTONE COLLEGE",
+        eiin: "132368",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Uttara",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 2700, minGpa: 4.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "18",
+        name: "MIRPUR SCIENCE COLLEGE",
+        eiin: "136660",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 220, minGpa: 4.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "19",
+        name: "TEJGAON COLLEGE",
+        eiin: "108503",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Tejgaon",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 300, minGpa: 4.00 },
+            business: { seats: 160, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "20",
+        name: "AKIJ FOUNDATION COLLEGE",
+        eiin: "136616",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Uttara",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 75, minGpa: 3.03 },
+            business: { seats: 75, minGpa: 3.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "21",
+        name: "ADAMJEE CANTONMENT COLLEGE",
+        eiin: "107855",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhaka Cant.",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 1505, minGpa: 5.00 },
+            business: { seats: 333, minGpa: 4.25 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "22",
+        name: "B A F SHAHEEN COLLEGE DHAKA",
+        eiin: "107858",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhaka Cant.",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 766, minGpa: 5.00 },
+            business: { seats: 383, minGpa: 4.15 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "23",
+        name: "B. A. F. SHAHEEN COLLEGE (KURMITOLA)",
+        eiin: "107856",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhaka Cant.",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 800, minGpa: 5.00 },
+            business: { seats: 250, minGpa: 4.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "24",
+        name: "ENGINEERING UNIVERSITY SCHOOL AND COLLEGE",
+        eiin: "108066",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Ramna",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 320, minGpa: 5.00 },
+            business: { seats: 93, minGpa: 4.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "25",
+        name: "NOUBAHINI COLLEGE DHAKA",
+        eiin: "107852",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Kafrul",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 450, minGpa: 5.00 },
+            business: { seats: 360, minGpa: 3.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "26",
+        name: "RAJUK UTTARA MODEL COLLEGE",
+        eiin: "132575",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Uttara",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 410, minGpa: 5.00 },
+            business: { seats: 170, minGpa: 4.00 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "27",
+        name: "S O S HERMANN GMEINER COLLEGE",
+        eiin: "108214",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 140, minGpa: 5.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "28",
+        name: "UDAYAN UCHCHA MADHYAMIK BIDYALAYA",
+        eiin: "108064",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Shahbagh",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 330, minGpa: 5.00 },
+            business: { seats: 160, minGpa: 3.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "29",
+        name: "SHAHEED RAMIZ UDDIN CANTONMENT COLLEGE",
+        eiin: "107857",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Dhaka Cant.",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 320, minGpa: 4.75 },
+            business: { seats: 250, minGpa: 3.75 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "30",
+        name: "BIAM MODEL SCHOOL & COLLEGE",
+        eiin: "132337",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Ramna",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 50, minGpa: 4.30 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "31",
+        name: "QUALITY EDUCATION COLLEGE",
+        eiin: "136472",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Khilgaon",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 0, minGpa: 0 },
+            business: { seats: 50, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "32",
+        name: "UTTARA TOWN COLLEGE",
+        eiin: "136865",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Uttara",
+        type: "বেসরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 0, minGpa: 0 },
+            business: { seats: 76, minGpa: 2.50 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও কলেজ কর্তৃপক্ষের নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "33",
+        name: "DHAKA COLLEGE",
+        eiin: "108151",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "New Market",
+        type: "সরকারি",
+        gender: "ছেলে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 900, minGpa: 5.00 },
+            business: { seats: 250, minGpa: 4.50 },
+            humanities: { seats: 200, minGpa: 4.50 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "34",
+        name: "EDEN MOHILA COLLEGE",
+        eiin: "108152",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Azimpur",
+        type: "সরকারি",
+        gender: "মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 500, minGpa: 5.00 },
+            business: { seats: 500, minGpa: 4.50 },
+            humanities: { seats: 500, minGpa: 4.00 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "35",
+        name: "GOVERNMENT SCIENCE COLLEGE",
+        eiin: "108153",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Farmgate, Tejgaon",
+        type: "সরকারি",
+        gender: "ছেলে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 1245, minGpa: 5.00 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 0, minGpa: 0 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "36",
+        name: "KABI NAZRUL GOVERNMENT COLLEGE",
+        eiin: "108154",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Lalbagh, Sutrapur",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 600, minGpa: 4.75 },
+            business: { seats: 600, minGpa: 4.25 },
+            humanities: { seats: 400, minGpa: 3.75 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "37",
+        name: "GOVERNMENT SHAHEED SUHRAWARDY COLLEGE",
+        eiin: "108155",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Lalbagh, Sutrapur",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 500, minGpa: 4.75 },
+            business: { seats: 500, minGpa: 4.25 },
+            humanities: { seats: 400, minGpa: 3.75 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "38",
+        name: "GOVERNMENT BANGLA COLLEGE",
+        eiin: "108156",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mirpur",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 650, minGpa: 4.75 },
+            business: { seats: 550, minGpa: 4.25 },
+            humanities: { seats: 450, minGpa: 3.75 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "39",
+        name: "BEGUM BADRUNNESA GOVERNMENT WOMEN'S COLLEGE",
+        eiin: "108157",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Bakshibazar, Lalbagh",
+        type: "সরকারি",
+        gender: "মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 450, minGpa: 4.75 },
+            business: { seats: 350, minGpa: 4.25 },
+            humanities: { seats: 350, minGpa: 3.75 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "40",
+        name: "MOHAMMADPUR GOVERNMENT COLLEGE",
+        eiin: "108258",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mohammadpur",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "সকাল/দিবা",
+        groups: {
+            science: { seats: 600, minGpa: 5.00 },
+            business: { seats: 300, minGpa: 4.50 },
+            humanities: { seats: 300, minGpa: 4.00 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "41",
+        name: "GOVERNMENT TITUMIR COLLEGE",
+        eiin: "108358",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Mohakhali, Banani",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 600, minGpa: 4.75 },
+            business: { seats: 600, minGpa: 4.25 },
+            humanities: { seats: 400, minGpa: 3.75 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "42",
+        name: "LALMATIA GOVERNMENT MOHILA COLLEGE",
+        eiin: "108259",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Lalmatia, Mohammadpur",
+        type: "সরকারি",
+        gender: "মেয়ে",
+        shift: "সকাল/দিবা",
+        groups: {
+            science: { seats: 400, minGpa: 4.75 },
+            business: { seats: 350, minGpa: 4.00 },
+            humanities: { seats: 350, minGpa: 3.50 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সরকারি নীতিমালার নির্দেশনা অনুসরণ করতে হবে।"
+    },
+    {
+        id: "43",
+        name: "GOVERNMENT SANGEET COLLEGE",
+        eiin: "108260",
+        division: "ঢাকা",
+        district: "Dhaka",
+        area: "Sher-e-Bangla Nagar",
+        type: "সরকারি",
+        gender: "ছেলে-মেয়ে",
+        shift: "দিন",
+        groups: {
+            science: { seats: 0, minGpa: 0 },
+            business: { seats: 0, minGpa: 0 },
+            humanities: { seats: 150, minGpa: 2.00 }
+        },
+        instruction: "ভর্তির সময় মূল কাগজপত্র ও সঙ্গীত কলেজের বিশেষ নিয়ম অনুসরণ করতে হবে।"
+    }
+  ];
+
+  // AUTH LOGIC
+  document.getElementById("userTab").onclick = () => {
+      loginType = 'user';
+      document.getElementById("userTab").classList.add("active");
+      document.getElementById("adminTab").classList.remove("active");
+  };
+
+  document.getElementById("adminTab").onclick = () => {
+      loginType = 'admin';
+      document.getElementById("adminTab").classList.add("active");
+      document.getElementById("userTab").classList.remove("active");
+  };
+
+  document.getElementById("btnShowRegister").onclick = () => {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("registerSection").style.display = "block";
+  };
+
+  document.getElementById("btnShowLogin").onclick = () => {
+      document.getElementById("registerSection").style.display = "none";
+      document.getElementById("loginSection").style.display = "block";
+  };
+
+  document.getElementById("loginForm").onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim();
+
+      if (loginType === "admin") {
+          currentUser = { name: "Administrator", role: "admin" };
+      } else {
+          currentUser = { name: email.split('@')[0] || "User", role: "user" };
+      }
+      
+      startApp();
+  };
+
+  document.getElementById("registerForm").onsubmit = function(e) {
+      e.preventDefault();
+      const name = document.getElementById("regName").value.trim();
+      currentUser = { name: name, role: "user" };
+      startApp();
+  };
+
+  function startApp() {
+      document.getElementById("authPage").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      document.getElementById("userName").innerText = currentUser.name;
+
+      if (currentUser.role === "admin") {
+          document.getElementById("adminPanel").style.display = "block";
+      }
+
+      renderColleges();
+  }
+
+  document.getElementById("btnLogout").onclick = function() {
+      currentUser = null;
+      document.getElementById("app").style.display = "none";
+      document.getElementById("authPage").style.display = "flex";
+  };
+
+  // RENDERING LOGIC
+  function formatNumber(number) {
+      return Number(number || 0).toLocaleString("bn-BD");
+  }
+
+  function isEligible(college, group, studentGpa) {
+      if (!group || isNaN(studentGpa)) return false;
+      const data = college.groups[group];
+      if (!data || data.seats <= 0) return false;
+      return studentGpa >= data.minGpa;
+  }
+
+  function renderColleges() {
+      const search = document.getElementById("search").value.toLowerCase().trim();
+      const division = document.getElementById("division").value;
+      const district = document.getElementById("district").value.toLowerCase().trim();
+      const group = document.getElementById("groupFilter").value;
+      const type = document.getElementById("typeFilter").value;
+      const studentGpa = parseFloat(document.getElementById("studentGpa").value);
+
+      const filtered = allColleges.filter(college => {
+          const searchMatch = college.name.toLowerCase().includes(search) || String(college.eiin).includes(search);
+          const divisionMatch = !division || college.division === division;
+          const districtMatch = !district || college.district.toLowerCase().includes(district) || college.area.toLowerCase().includes(district);
+          const typeMatch = !type || college.type === type;
+
+          let groupMatch = true;
+          if (group) {
+              groupMatch = college.groups[group] && college.groups[group].seats > 0;
+              if (groupMatch && !isNaN(studentGpa)) {
+                  groupMatch = studentGpa >= college.groups[group].minGpa;
+              }
+          }
+
+          return searchMatch && divisionMatch && districtMatch && typeMatch && groupMatch;
+      });
+
+      const list = document.getElementById("collegeList");
+      list.innerHTML = "";
+
+      if (filtered.length === 0) {
+          list.innerHTML = `
+              <div style="background:white; padding:30px; border-radius:15px; grid-column:1/-1; text-align:center;">
+                  আপনার ফিল্টার অনুযায়ী কোনো কলেজ পাওয়া যায়নি।
+              </div>
+          `;
+      }
+
+      filtered.forEach(college => {
+          let groupsHTML = "";
+          const groupNames = { science: "বিজ্ঞান", business: "ব্যবসায় শিক্ষা", humanities: "মানবিক" };
+
+          Object.keys(college.groups).forEach(key => {
+              const data = college.groups[key];
+              if (data.seats > 0) {
+                  groupsHTML += `
+                      <div class="group-row">
+                          <div><span class="group-name">${groupNames[key]}</span></div>
+                          <div class="group-info">
+                              <strong>${formatNumber(data.seats)} আসন</strong>
+                              ন্যূনতম GPA ${Number(data.minGpa).toFixed(2)}
+                          </div>
+                      </div>
+                  `;
+              }
+          });
+
+          const totalSeats = Object.values(college.groups).reduce((total, grp) => total + Number(grp.seats || 0), 0);
+          const deleteButton = currentUser && currentUser.role === "admin" 
+              ? `<button class="delete-btn" onclick="deleteCollege('${college.id}')">🗑️ কলেজটি মুছে দিন</button>` 
+              : "";
+
+          list.innerHTML += `
+              <div class="college-card">
+                  <div class="college-top">
+                      <div class="college-name">${college.name}</div>
+                      <div class="eiin">EIIN: ${college.eiin}</div>
+                  </div>
+                  <div class="location">${college.division} › ${college.district} › ${college.area}</div>
+                  <div class="college-meta">
+                      ${college.type} &nbsp; | &nbsp; ${college.gender} &nbsp; | &nbsp; মোট ${formatNumber(totalSeats)} আসন
+                  </div>
+                  <div class="group-list">${groupsHTML}</div>
+                  <button class="details-btn" onclick="showDetails('${college.id}')">📋 ভর্তি সম্পর্কে বিস্তারিত দেখুন</button>
+                  ${deleteButton}
+              </div>
+          `;
+      });
+
+      updateStats(filtered, group, studentGpa);
+  }
+
+  // LISTENERS
+  document.getElementById("search").oninput = renderColleges;
+  document.getElementById("studentGpa").oninput = renderColleges;
+  document.getElementById("division").onchange = renderColleges;
+  document.getElementById("district").oninput = renderColleges;
+  document.getElementById("groupFilter").onchange = renderColleges;
+  document.getElementById("typeFilter").onchange = renderColleges;
+
+  function updateStats(colleges, group, studentGpa) {
+      const totalSeats = colleges.reduce((total, college) => {
+          return total + Object.values(college.groups).reduce((sum, item) => sum + Number(item.seats || 0), 0);
+      }, 0);
+
+      let eligible = (group && !isNaN(studentGpa)) 
+          ? colleges.filter(c => isEligible(c, group, studentGpa)).length 
+          : colleges.length;
+
+      document.getElementById("collegeCount").innerText = formatNumber(colleges.length);
+      document.getElementById("seatCount").innerText = formatNumber(totalSeats);
+      document.getElementById("eligibleCount").innerText = formatNumber(eligible);
+  }
+
+  // MODAL LOGIC
+  function showDetails(id) {
+      const college = allColleges.find(item => item.id === id);
+      if (!college) return;
+
+      document.getElementById("detailName").innerText = college.name;
+      const totalSeats = Object.values(college.groups).reduce((total, item) => total + Number(item.seats || 0), 0);
+
+      document.getElementById("detailContent").innerHTML = `
+          <div class="info-section">
+              <h3>কলেজের তথ্য</h3>
+              <ul>
+                  <li>EIIN: ${college.eiin}</li>
+                  <li>বিভাগ: ${college.division}</li>
+                  <li>জেলা: ${college.district}</li>
+                  <li>এলাকা: ${college.area}</li>
+                  <li>ধরন: ${college.type}</li>
+                  <li>লিঙ্গ: ${college.gender}</li>
+                  <li>শিফট: ${college.shift}</li>
+                  <li>মোট আসন: ${formatNumber(totalSeats)}</li>
+              </ul>
+          </div>
+          <div class="info-section">
+              <h3>Group অনুযায়ী ভর্তি যোগ্যতা</h3>
+              <ul>
+                  <li>বিজ্ঞান: আসন ${formatNumber(college.groups.science.seats)} | Minimum GPA ${Number(college.groups.science.minGpa).toFixed(2)}</li>
+                  <li>ব্যবসায় শিক্ষা: আসন ${formatNumber(college.groups.business.seats)} | Minimum GPA ${Number(college.groups.business.minGpa).toFixed(2)}</li>
+                  <li>মানবিক: আসন ${formatNumber(college.groups.humanities.seats)} | Minimum GPA ${Number(college.groups.humanities.minGpa).toFixed(2)}</li>
+              </ul>
+          </div>
+          <div class="notice">
+              ⚠️ <strong>বিশেষ নির্দেশনা:</strong> ${college.instruction}
+          </div>
+      `;
+
+      document.getElementById("detailsModal").style.display = "flex";
+  }
+
+  document.getElementById("btnCloseDetails").onclick = () => {
+      document.getElementById("detailsModal").style.display = "none";
+  };
+
+  // ADD / DELETE LOGIC
+  document.getElementById("btnOpenAddModal").onclick = () => {
+      document.getElementById("addModal").style.display = "flex";
+  };
+
+  document.getElementById("btnCloseAddModal").onclick = () => {
+      document.getElementById("addModal").style.display = "none";
+  };
+
+  document.getElementById("btnAddCollege").onclick = function() {
+      const name = document.getElementById("newName").value.trim();
+      const eiin = document.getElementById("newEiin").value.trim();
+      const division = document.getElementById("newDivision").value.trim();
+      const district = document.getElementById("newDistrict").value.trim();
+      const area = document.getElementById("newArea").value.trim();
+
+      if (!name || !eiin || !division || !district || !area) {
+          alert("প্রয়োজনীয় তথ্যসমূহ পূরণ করুন!");
+          return;
+      }
+
+      const newCollege = {
+          id: Date.now().toString(),
+          name, eiin, division, district, area,
+          type: document.getElementById("newType").value,
+          gender: document.getElementById("newGender").value,
+          shift: document.getElementById("newShift").value,
+          groups: {
+              science: { seats: Number(document.getElementById("scienceSeats").value) || 0, minGpa: Number(document.getElementById("scienceGpa").value) || 0 },
+              business: { seats: Number(document.getElementById("businessSeats").value) || 0, minGpa: Number(document.getElementById("businessGpa").value) || 0 },
+              humanities: { seats: Number(document.getElementById("humanitiesSeats").value) || 0, minGpa: Number(document.getElementById("humanitiesGpa").value) || 0 }
+          },
+          instruction: document.getElementById("newInstruction").value || "ভর্তির আগে সংশ্লিষ্ট কর্তৃপক্ষের সাথে যোগাযোগ করুন।"
+      };
+
+      allColleges.push(newCollege);
+      document.getElementById("addModal").style.display = "none";
+      renderColleges();
+      alert("নতুন কলেজ যুক্ত করা হয়েছে!");
+  };
+
+  function deleteCollege(id) {
+      if (confirm("আপনি কি এটি মুছে ফেলতে চান?")) {
+          allColleges = allColleges.filter(col => col.id !== id);
+          renderColleges();
+      }
+  }
+</script>
+
+</body>
+</html>
